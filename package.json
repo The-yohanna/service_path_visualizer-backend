@@ -1,0 +1,37 @@
+{
+  "name": "service_path_visualizer-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx nodemon --exec npx babel-node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/The-yohanna/service_path_visualizer-backend.git"
+  },
+  "author": "John Odhiambo (Yohanna)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/The-yohanna/service_path_visualizer-backend/issues"
+  },
+  "homepage": "https://github.com/The-yohanna/service_path_visualizer-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.12",
+    "mongoose-auto-increment": "^5.0.1",
+    "mongoose-better-id": "^2.1.1",
+    "mongoose-id-assigner": "^4.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/node": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "nodemon": "^2.0.14"
+  }
+}
