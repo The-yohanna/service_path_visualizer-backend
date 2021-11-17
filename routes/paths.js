@@ -72,10 +72,11 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    const { pathID } = req.body;
-    const deletedpath = await Path.findOneAndDelete({ _id: pathID }).exec();
+    const deletedpath = await Path.findOneAndDelete({
+      _id: req.params.id,
+    }).exec();
     res.status(200).send("delete successful");
     let auditlog = new AuditLog({
       source: req.headers["user-agent"],

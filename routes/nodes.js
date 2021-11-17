@@ -12,9 +12,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:nodeID", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const node = await Node.findOne({ _id: req.params.nodeID }).exec();
+    const node = await Node.findOne({ _id: req.params.id }).exec();
     res.send(node);
   } catch (err) {
     res.status(err.code).send(err.message);
@@ -68,10 +68,11 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    const { nodeID } = req.body;
-    const deletednode = await Node.findOneAndDelete({ _id: nodeID }).exec();
+    const deletednode = await Node.findOneAndDelete({
+      _id: req.params.id,
+    }).exec();
     res.status(200).send("delete successful");
     let auditlog = new AuditLog({
       source: req.headers["user-agent"],

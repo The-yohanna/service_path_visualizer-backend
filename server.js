@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const nodeRoute = require("./routes/nodes");
 const pathRoute = require("./routes/paths");
 const mongoose = require("mongoose");
@@ -19,8 +20,7 @@ export const dbconnection = mongoose
     process.exit();
   });
 
-
-
+app.use(cors());
 app.get("/", (req, res) => {
   res.send("welcome to the yohanna's application");
 });
