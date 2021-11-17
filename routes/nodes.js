@@ -52,19 +52,17 @@ router.patch("/:id", async (req, res) => {
       { $set: { name: name, state: state, position: position } },
       { upsert: true }
     ).exec();
-
-    res.send("update successful");
     let auditlog = new AuditLog({
       source: req.headers["user-agent"],
       HTTPmethod: req.method,
-      pathID: updatednode.pathID,
-      nodeID: updatednode.pathID,
-      status: updatednode.status,
+      nodeID: req.params.id,
+      status: req.body.state,
       result: res.statusCode,
       resultDetail: res.statusMessage,
     });
     await auditlog.save();
     console.log(auditlog);
+    return res.send("update successful");
   } catch (err) {
     res.status(err.code).send(err.message);
   }

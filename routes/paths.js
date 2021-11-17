@@ -3,14 +3,12 @@ const router = express.Router();
 const Path = require("../models/paths.model");
 const AuditLog = require("../models/logs.model");
 const { Children, State } = require("../controller/controller");
+const Node = require("../models/nodes.model");
 
 router.get("/", async (req, res, next) => {
   try {
     const paths = await Path.find().exec();
     res.send(paths);
-    console.log(res.statusCode);
-    console.log(res.statusMessage);
-    console.log(req.headers["user-agent"]);
   } catch (err) {
     res.status(err.code).send(err.message);
   }
@@ -46,8 +44,8 @@ router.post("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     const { name, position } = req.body;
-    const state = State(req.params.id);
-    const numChildren = Children(req.params.id);
+    const state = await State(req.params.id);
+    const numChildren = await Children(req.params.id);
     Path.updateOne(
       { _id: req.params.id },
       {
@@ -58,17 +56,17 @@ router.patch("/:id", async (req, res) => {
       },
       { upsert: true }
     ).exec();
-    res.send("update successful");
     let auditlog = new AuditLog({
       source: req.headers["user-agent"],
       HTTPmethod: req.method,
-      pathID: updatedpath._id,
-      status: updatedpath.state,
+      pathID: req.params.id,
+      status: req.body.state,
       result: res.statusCode,
       resultDetail: res.statusMessage,
     });
     await auditlog.save();
     console.log(auditlog);
+    return res.send("update successful");
   } catch (err) {
     res.status(err.code).send(err.message);
   }

@@ -1,21 +1,23 @@
 const Node = require("../models/nodes.model");
 const Path = require("../models/paths.model");
 
-export const Children = (pathID) => {
-  let count = Node.find({ pathID: pathID }).count().exec();
+export const Children = async (id) => {
+  let count = await Node.countDocuments({
+    pathID: id,
+  }).exec();
   return count;
 };
 
-export const State = (pathID) => {
+export const State = async (pathID) => {
   if (
-    Node.find({ pathID: pathID, state: -1 || 0 })
-      .count()
-      .exec() === 0
+    (await Node.countDocuments({ pathID: pathID, state: -1 || 0 }).exec()) === 0
   ) {
-    Path.updateOne({ _id: pathID }, { state: 1 }).exec();
-  } else if (Node.find({ pathID: pathID, state: -1 }).count().exec() >= 1) {
-    Path.updateOne({ _id: pathID }, { state: -1 }).exec();
+    return 1;
+  } else if (
+    (await Node.countDocuments({ pathID: pathID, state: -1 }).exec()) >= 1
+  ) {
+    return -1;
   } else {
-    Path.updateOne({ _id: pathID }, { state: 0 }).exec();
+    return 0;
   }
 };
