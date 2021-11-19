@@ -9,6 +9,7 @@ const pathSchema = new Schema({
   position: { type: Number, default: 0 },
   name: { type: String, required: true },
   numChildren: { type: Number, default: 0 },
+  children: { type: Array },
   state: { type: Number, default: 0 },
 });
 

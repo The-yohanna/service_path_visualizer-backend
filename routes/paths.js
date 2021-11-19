@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Path = require("../models/paths.model");
 const AuditLog = require("../models/logs.model");
-const { Children, State } = require("../controller/controller");
-const Node = require("../models/nodes.model");
+const { NumChildren, Children, State } = require("../controller/controller");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -45,13 +44,15 @@ router.patch("/:id", async (req, res) => {
   try {
     const { name, position } = req.body;
     const state = await State(req.params.id);
-    const numChildren = await Children(req.params.id);
+    const numChildren = await NumChildren(req.params.id);
+    const children = await Children(req.params.id);
     Path.updateOne(
       { _id: req.params.id },
       {
         name: name,
         state: state,
         numChildren: numChildren,
+        children: children,
         position: position,
       },
       { upsert: true }
